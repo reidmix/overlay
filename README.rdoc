@@ -6,7 +6,7 @@ Inspired by the locale views as defined in local_rails[http://github.com/mutoh/l
 and implemented post Rails 2.2.2.
 
 Additional hints on how to set overlay dimensions can also be found on the
-rails guide on internationalization[http://guides.rubyonrails.org/i18n.html]
+rails guide on internationalization[http://guides.rubyonrails.org/i18n.html].
 
 == Example
 
@@ -21,8 +21,8 @@ You can set your overlay in a before filter in your ApplicationController.
 Then create your layouts, views, and partials like normal.  When you need to
 deviate from a view based on cobrand add the cobrand like so:
 
-  - views/artists/index.html.erb
-  - views/artists/index_emusic.html.erb
+- views/artists/index.html.erb
+- views/artists/index_emusic.html.erb
 
 If the user's cobrand is "emusic" then index_emusic.html.erb will be selected
 for render, otherwise if there is no match, index.html.erb will continue to be
