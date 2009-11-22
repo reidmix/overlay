@@ -1,0 +1,89 @@
+= Overlay
+
+Adds a way to overlay views based on dimensions set in a template's file name.
+
+Inspired by the locale views as defined in local_rails[http://github.com/mutoh/locale_rails]
+and implemented post Rails 2.2.2.
+
+Additional hints on how to set overlay dimensions can also be found on the
+rails guide on internationalization[http://guides.rubyonrails.org/i18n.html]
+
+== Example
+
+You can set your overlay in a before filter in your ApplicationController.
+
+  before_filter :set_overlay
+  def set_overlay
+    # user is logged in and has a cobrand 'emusic'
+    Overlay.current = user.cobrand
+  end
+
+Then create your layouts, views, and partials like normal.  When you need to
+deviate from a view based on cobrand add the cobrand like so:
+
+  - views/artists/index.html.erb
+  - views/artists/index_emusic.html.erb
+
+If the user's cobrand is "emusic" then index_emusic.html.erb will be selected
+for render, otherwise if there is no match, index.html.erb will continue to be
+used as the "common" view.
+
+== Configuration
+
+You can set multiple dimensions to select upon.  These dimensions match filenames
+exactly and there is no inheritence.  In your environment.rb or in an initializer:
+
+  Overlay.pattern = ':cobrand-:product'
+
+If you do not like the dash (-) as the default separator, you can set that as well
+in your environment or initializer, but it must match the pattern:
+
+  Overlay.separator = '_'
+
+Then in you filter you pass a hash instead, for syntactic sugar +set_view+ is an
+alias of +current=+.
+
+  def set_overlay
+    Overlay.set_view :cobrand => user.cobrand, :product => params[:product]
+  end
+
+Then create alternate files, in this case you could end up with at least 4
+variations including to the common view:
+
+  - views/artists/index.html.erb              # common
+  - views/artists/index_emusic.html.erb       # no product specified
+  - views/artists/index_emusic-mp3.html.erb   # cobrand and product specified
+  - views/artists/index_mp3.html.erb          # no cobrand specified
+
+NOTE: make sure that when a dimension is not specified it is set as +nil+.
+All the dimension must always be specified for Overlay to work properly.
+
+== Tricks and Hints
+
+You can use a common view with partial overlays.  So for example in index.html.erb:
+  <%= render :partial => 'artist' %>
+
+Then create the following partials:
+
+  - views/artists/_artist.html.erb          # used when not cobranded or not emusic or lastfm
+  - views/artists/_artist_emusic.html.erb   # used when emusic cobrand
+  - views/artists/_artist_lastfm.html.erb   # used when lastfm cobrand
+
+If you wanted only the cobranded partials to show up, and there is no common partial don't
+add "views/artists/_artist.html.erb" but make sure you rescue:
+
+  = render :partial => 'artist' rescue nil
+
+== Internationalization (and Formats)
+
+This plugin honors internationalization view locales (and formats).  You can target a
+locale and an overlay.  For instance:
+
+  - index.en.html.erb
+  - index.sp.html.erb
+  - index_emusic.en.html.erb
+  - index_emusic.sp.html.erb
+  - index_lastfm.en.html.erb
+  - index_lastfm.sp.html.erb
+
+Copyright (c) 2009  Reid MacDonald <reid@laruby.com>, released under the MIT license
