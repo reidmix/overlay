@@ -50,10 +50,10 @@ alias of +current=+.
 Then create alternate files, in this case you could end up with at least 4
 variations including to the common view:
 
-  - views/artists/index.html.erb              # common
-  - views/artists/index_emusic.html.erb       # no product specified
-  - views/artists/index_emusic-mp3.html.erb   # cobrand and product specified
-  - views/artists/index_mp3.html.erb          # no cobrand specified
+- views/artists/index.html.erb              # common
+- views/artists/index_emusic.html.erb       # no product specified
+- views/artists/index_emusic-mp3.html.erb   # cobrand and product specified
+- views/artists/index_mp3.html.erb          # no cobrand specified
 
 NOTE: make sure that when a dimension is not specified it is set as +nil+.
 All the dimension must always be specified for Overlay to work properly.
@@ -65,9 +65,9 @@ You can use a common view with partial overlays.  So for example in index.html.e
 
 Then create the following partials:
 
-  - views/artists/_artist.html.erb          # used when not cobranded or not emusic or lastfm
-  - views/artists/_artist_emusic.html.erb   # used when emusic cobrand
-  - views/artists/_artist_lastfm.html.erb   # used when lastfm cobrand
+- views/artists/_artist.html.erb          # used when not cobranded or not emusic or lastfm
+- views/artists/_artist_emusic.html.erb   # used when emusic cobrand
+- views/artists/_artist_lastfm.html.erb   # used when lastfm cobrand
 
 If you wanted only the cobranded partials to show up, and there is no common partial don't
 add "views/artists/_artist.html.erb" but make sure you rescue:
@@ -79,11 +79,11 @@ add "views/artists/_artist.html.erb" but make sure you rescue:
 This plugin honors internationalization view locales (and formats).  You can target a
 locale and an overlay.  For instance:
 
-  - index.en.html.erb
-  - index.sp.html.erb
-  - index_emusic.en.html.erb
-  - index_emusic.sp.html.erb
-  - index_lastfm.en.html.erb
-  - index_lastfm.sp.html.erb
+- index.en.html.erb
+- index.sp.html.erb
+- index_emusic.en.html.erb
+- index_emusic.sp.html.erb
+- index_lastfm.en.html.erb
+- index_lastfm.sp.html.erb
 
 Copyright (c) 2009  Reid MacDonald <reid@laruby.com>, released under the MIT license
