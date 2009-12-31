@@ -70,9 +70,9 @@ Then create the following partials:
 - views/artists/_artist_lastfm.html.erb   # used when lastfm cobrand
 
 If you wanted only the cobranded partials to show up, and there is no common partial don't
-add "views/artists/_artist.html.erb" but make sure you rescue:
+add "views/artists/_artist.html.erb" but make you can pass a default:
 
-  = render :partial => 'artist' rescue nil
+  = render :partial => 'artist', :default => nil
 
 == Internationalization (and Formats)
 

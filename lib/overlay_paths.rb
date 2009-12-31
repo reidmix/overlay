@@ -17,6 +17,7 @@ ActionView::PathSet.class_eval do
       elsif template = load_path["#{template_path}_#{Overlay.current}.#{I18n.locale}"]
         return template
       else
+        Thread.current[:missing_default] = true
         return find_template_without_overlay(original_template_path, format, html_fallback)
       end
     end

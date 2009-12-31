@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
-describe Overlay do
+describe ActionView::PathSet do
   describe :alias_method_chain do
     it 'defines chained methods' do
       ActionView::PathSet.instance_methods.should be_member('find_template')
@@ -28,6 +28,12 @@ describe Overlay do
       it 'returns template if it response to render' do
         template = mock('template', :render => true)
         @paths.find_template(template).should == template
+      end
+
+      it 'sets Thead.current on :missing_template to true' do
+        @paths.should_receive(:find_template_without_overlay).with('foo', 'html', false).and_return :template
+        Thread.current.should_receive(:[]=).with(:missing_default, true)
+        @paths.find_template('foo', 'html', false)
       end
     end
 
