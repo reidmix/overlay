@@ -30,10 +30,24 @@ describe ActionView::PathSet do
         @paths.find_template(template).should == template
       end
 
-      it 'sets Thead.current on :missing_template to true' do
-        @paths.should_receive(:find_template_without_overlay).with('foo', 'html', false).and_return :template
-        Thread.current.should_receive(:[]=).with(:missing_default, true)
-        @paths.find_template('foo', 'html', false)
+      describe 'Thread.current[:missing_default]' do
+        it 'is not set on success' do
+          @paths.should_receive(:find_template_without_overlay).with('foo', 'html', false).and_return :template
+          Thread.current.should_not_receive(:[]=)
+          @paths.find_template('foo', 'html', false)
+        end
+
+        it 'is not set on non-missing template error' do
+          @paths.should_receive(:find_template_without_overlay).and_raise RuntimeError.new('suck')
+          Thread.current.should_not_receive(:[]=)
+          lambda { @paths.find_template('foo', 'html', false) }.should raise_error(RuntimeError, 'suck')
+        end
+
+        it 'is true with missing template' do
+          @paths.should_receive(:find_template_without_overlay).and_raise ActionView::MissingTemplate.new(ActionView::PathSet.new, 'foo')
+          Thread.current.should_receive(:[]=).with(:missing_default, true)
+          lambda { @paths.find_template('foo', 'html', false) }.should raise_error(ActionView::MissingTemplate)
+        end
       end
     end
 
